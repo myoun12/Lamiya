@@ -1,8 +1,8 @@
-module.exports.config = {
+Module.exports.config = {
  name: "info",
  version: "1.0.0",
  hasPermssion: 0,
- credits: "SHAHADAT SAHU",
+ credits: "MYOUN SORKAR",
  description: "Bot information command",
  commandCategory: "For users",
  hide: true,
@@ -32,9 +32,9 @@ module.exports.run = async function ({ api, event, args, Users, Threads }) {
  const totalUsers = global.data.allUserID.length;
  const totalThreads = global.data.allThreadID.length;
 
- const msg = `╭⭓ ⪩ 𝐁𝐎𝐓𝐓 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍 ⪨
+ const msg = `╭⭓ ⪩ 𝐁𝐎𝐓𝐓 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎N ⪨
 │
-├─ 🤖 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲 : ─꯭─⃝‌‌𝐒𝐡𝐚𝐡𝐚𝐝𝐚𝐭 𝐂𝐡𝐚𝐭 𝐁𝐨𝐭
+├─ 🤖 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲 : ⎯͢⎯⃝🌺𝗟𝗮𝗺𝗶𝗮 𝗔𝗸𝘁𝗵𝗮𝗿⎯͢⎯⃝😻
 ├─ ☢️ 𝗣𝗿𝗲𝗳𝗶𝘅 : ${config.PREFIX}
 ├─ ♻️ 𝗣𝗿𝗲𝗳𝗶𝘅 𝗕𝗼𝘅 : ${prefix}
 ├─ 🔶 𝗠𝗼𝗱𝘂𝗹𝗲𝘀 : ${commands.size}
@@ -44,13 +44,10 @@ module.exports.run = async function ({ api, event, args, Users, Threads }) {
 
 ╭⭓ ⪩ 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢 ⪨
 │
-├─ 👑 𝗡𝗮𝗺𝗲 : 𝐒𝐇𝐀𝐇𝐀𝐃𝐀𝐓 𝐒𝐀𝐇𝐔
-├─ 📲 𝗙𝗮𝗰𝗲𝗯𝗼𝗼𝗸 :
-│ facebook.com/100044713412032
-├─ 💌 𝗠𝗲𝘀𝘀𝗲𝗻𝗴𝗲𝗿 :
-│ m.me/100044713412032
-├─ 📞 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 :
-│ wa.me/+8801882333052
+├─ ✿ 𝐍𝐀𝐌𝐄 : MYOUN SORKAR ❁
+├─ ✿ 𝐅𝐑𝐎𝐌 : Tangail ❁
+├─ ✿ 𝐂𝐋𝐀𝐒𝐒 : SECOND SEMESTER CIVIL DEPARTMENT ❁
+├─ ✿ 𝐉𝐎𝐁 : TANKI MARA ❁
 │
 ╰───────⭓
 
@@ -62,15 +59,15 @@ module.exports.run = async function ({ api, event, args, Users, Threads }) {
 ╰───────⭓
 
 ❤️ 𝗧𝗵𝗮𝗻𝗸𝘀 𝗳𝗼𝗿 𝘂𝘀𝗶𝗻𝗴 🌺
- 😍─꯭─⃝‌‌𝐒𝐡𝐚𝐡𝐚𝐝𝐚𝐭 𝐂𝐡𝐚𝐭 𝐁𝐨𝐭😘`;
+ 😍 ⎯͢⎯⃝🌺𝗟𝗮𝗺𝗶𝗮 𝗔𝗸𝘁𝗵𝗮𝗿⎯͢⎯⃝😻 😘`;
  
 // 🔹 এখানে আপনার ফটো Imgur লিংক করে বসাবেন ✅
 
  const imgLinks = [
-    "https://i.imgur.com/gokzyKd.jpeg",
-    "https://i.imgur.com/g3hlQ0Z.jpeg",
-    "https://i.imgur.com/L7txp4M.jpeg",
-    "https://i.imgur.com/5dG8PS5.jpeg"
+    "",
+    "",
+    "",
+    ""
  ];
 
  const imgLink = imgLinks[Math.floor(Math.random() * imgLinks.length)];
