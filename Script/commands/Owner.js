@@ -1,64 +1,109 @@
-const request = require("request");
+const axios = require("axios");
 const fs = require("fs-extra");
 
-module.exports.config = {
-  name: "owner",
-  version: "1.0.1",
-  hasPermssion: 0,
-  credits: "SHAHADAT SAHU",
-  description: "Show Owner Info with styled box & random photo",
-  commandCategory: "Information",
-  usages: "owner",
-  cooldowns: 2
-};
+module.exports = {
+  config: {
+    name: "info",
+    aliases: ["owner", "botadmin", "creator", "dev"],
+    version: "2.0",
+    author: "Rasel Mahmud",
+    countDown: 3,
+    role: 0,
+    shortDescription: "Show bot owner information",
+    longDescription: "Displays detailed information about the bot's creator",
+    category: "info",
+    guide: {
+      en: "{pn} or {pn} owner"
+    }
+  },
 
-module.exports.run = async function ({ api, event }) {
+  onStart: async function ({ api, event, args }) {
+    const { threadID, messageID } = event;
+    
+    try {
+      // Create beautiful information box
+      const message = 
+        `━━━[ OWNER DETAILS ]━━━
 
-  
-  const info = `
-╔═════════════════════ ✿
-║ ✨ 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢 ✨
-╠═════════════════════ ✿
-║ 👑 𝗡𝗮𝗺𝗲 : 𝗦𝗛𝗔𝗛𝗔𝗗𝗔𝗧 𝗦𝗔𝗛𝗨
-║ 🧸 𝗡𝗶𝗰𝗸 𝗡𝗮𝗺𝗲 : 𝗦𝗔𝗛𝗨
-║ 🎂 𝗔𝗴𝗲 : 𝟭𝟴+
-║ 💘 𝗥𝗲𝗹𝗮𝘁𝗶𝗼𝗻 : 𝗦𝗶𝗻𝗴𝗹𝗲
-║ 🎓 𝗣𝗿𝗼𝗳𝗲𝘀𝘀𝗶𝗼𝗻 : 𝗦𝘁𝘂𝗱𝗲𝗻𝘁
-║ 📚 𝗘𝗱𝘂𝗰𝗮𝘁𝗶𝗼𝗻 : 𝗛𝗦𝗖
-║ 🏡 𝗔𝗱𝗱𝗿𝗲𝘀𝘀 : 𝗞𝗵𝗮𝗴𝗿𝗮𝗰𝗵𝗮𝗿𝗶
-╠═════════════════════ ✿
-║ 🔗 𝗖𝗢𝗡𝗧𝗔𝗖𝗧 𝗟𝗜𝗡𝗞𝗦
-╠═════════════════════ ✿
-║ 📘 𝗙𝗮𝗰𝗲𝗯𝗼𝗼𝗸 :
-║ fb.com/100044713412032
-║ 💬 𝗠𝗲𝘀𝘀𝗲𝗻𝗴𝗲𝗿 :
-║ m.me/100044713412032
-║ 📞 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 :
-║ wa.me/01882333052
-║ ✈️ 𝗧𝗲𝗹𝗲𝗴𝗿𝗮𝗺 :
-║ t.me/yoursahu
-╚═════════════════════ ✿
-`;
-
-  const images = [
-    "https://i.imgur.com/gokzyKd.jpeg",
-    "https://i.imgur.com/g3hlQ0Z.jpeg",
-    "https://i.imgur.com/L7txp4M.jpeg",
-    "https://i.imgur.com/5dG8PS5.jpeg"
-  ];
-
-  const randomImg = images[Math.floor(Math.random() * images.length)];
-
-  const callback = () => api.sendMessage(
-    {
-      body: info,
-      attachment: fs.createReadStream(__dirname + "/cache/owner.jpg")
-    },
-    event.threadID,
-    () => fs.unlinkSync(__dirname + "/cache/owner.jpg")
-  );
-
-  return request(encodeURI(randomImg))
-    .pipe(fs.createWriteStream(__dirname + "/cache/owner.jpg"))
-    .on("close", () => callback());
+👤 Name : MYOUN SORKAR
+👤 Gender : Male
+❤️ Relation : Single
+🔥 Age : 19+
+🕌 Religion : Islam
+🎓 Education : 2nd Semester (CSE)
+💼 Job : Taka Mara
+👑 Role : Group Owner
+🏠 Address : Tangail, Bangladesh`;
+      
+      // Get profile picture
+      const imgURL = "https://graph.facebook.com/100021922069388/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662";
+      const path = __dirname + "/cache/owner_info.jpg";
+      
+      // Create cache directory if not exists
+      const cacheDir = __dirname + "/cache";
+      if (!fs.existsSync(cacheDir)) {
+        fs.mkdirSync(cacheDir, { recursive: true });
+      }
+      
+      // Download profile picture
+      try {
+        const response = await axios({
+          method: "GET",
+          url: imgURL,
+          responseType: "arraybuffer",
+          timeout: 15000,
+          headers: {
+            'User-Agent': 'Mozilla/5.0'
+          }
+        });
+        
+        // Save image to cache
+        fs.writeFileSync(path, Buffer.from(response.data, "binary"));
+        
+        // Send message with image
+        await api.sendMessage({
+          body: message,
+          attachment: fs.createReadStream(path)
+        }, threadID, messageID);
+        
+        // Add reaction
+        api.setMessageReaction("✅", messageID, () => {}, true);
+        
+        // Cleanup after 5 seconds
+        setTimeout(() => {
+          try {
+            if (fs.existsSync(path)) {
+              fs.unlinkSync(path);
+            }
+          } catch (e) {
+            console.error("Cleanup error:", e);
+          }
+        }, 5000);
+        
+      } catch (imgError) {
+        console.error("Image download error:", imgError);
+        
+        // Send text-only message if image fails
+        await api.sendMessage({
+          body: message + "\n\n⚠️ Could not load profile picture"
+        }, threadID, messageID);
+        
+        api.setMessageReaction("⚠️", messageID, () => {}, true);
+      }
+      
+    } catch (error) {
+      console.error("Info command error:", error);
+      
+      const errorMessage = 
+        `╔═════❰ 𝐇𝐞𝐈𝐢•𝗟𝗨𝗠𝗢 ❱═════╗\n` +
+        `         ❌ 𝐄𝐑𝐑𝐎𝐑\n\n` +
+        `Failed to load owner information.\n\n` +
+        `🔄 Please try again\n` +
+        `👑 Developer: Rasel Mahmud\n` +
+        `🔗 https://www.facebook.com/profile.php?id=61591685889830\n` +
+        `╚═══════════════════╝`;
+      
+      await api.sendMessage(errorMessage, threadID, messageID);
+    }
+  }
 };
