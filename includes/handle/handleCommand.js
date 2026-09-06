@@ -15,7 +15,23 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
       threadID = String(threadID);
     const threadSetting = threadData.get(threadID) || {}
     const prefixRegex = new RegExp(`^(<@!?${senderID}>|${escapeRegex((threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : PREFIX)})\\s*`);
-    if (!prefixRegex.test(body)) return;
+    
+    // Admin prefix bypass logic
+    let matchedPrefix = "";
+    let args = [];
+    let commandName = "";
+    
+    if (ADMINBOT.includes(senderID) && !prefixRegex.test(body)) {
+        args = body.trim().split(/ +/);
+        commandName = args.shift().toLowerCase();
+    } else {
+        if (!prefixRegex.test(body)) return;
+        const match = body.match(prefixRegex);
+        matchedPrefix = match[0];
+        args = body.slice(matchedPrefix.length).trim().split(/ +/);
+        commandName = args.shift().toLowerCase();
+    }
+
     const adminbot = require('./../../config.json');
 //// admin -pa /////
     if(!global.data.allThreadID.includes(threadID) && !ADMINBOT.includes(senderID) && adminbot.adminPaOnly == true)
@@ -50,9 +66,7 @@ module.exports = function ({ api, models, Users, Threads, Currencies }) {
         }
       }
     }
-    const [matchedPrefix] = body.match(prefixRegex),
-      args = body.slice(matchedPrefix.length).trim().split(/ +/);
-    commandName = args.shift().toLowerCase();
+    
     var command = commands.get(commandName);
     if (!command) {
       var allCommandName = [];
